@@ -36,7 +36,8 @@ public class Main {
         ArrayList<Snake> snake = new ArrayList<Snake>(){{
             add(new Snake(10,10));
             add(new Snake(10,11));
-            add(new Snake(10,17));}};
+            add(new Snake(10,12));
+            add(new Snake(10,13));}};
         //Placing out som healthy and some crazy food
         Food food = new Food(rand.nextInt(GAME_WIDTH), rand.nextInt(GAME_LENGTH));
         Food crazyFood = new Food(rand.nextInt(GAME_WIDTH), rand.nextInt(GAME_LENGTH));
@@ -291,9 +292,7 @@ public class Main {
         for(int i = 1; i < snakeUp.size(); i++) {
             if((snakeUp.get(0).x == snakeUp.get(i).x && snakeUp.get(0).y == snakeUp.get(i).y) ||
                     (snakeDown.get(0).x == snakeUp.get(i).x && snakeDown.get(0).y == snakeUp.get(i).y)){
-
                 System.out.println("det var doubleSnakeLife snakeUp");
-
                 return false;
             }
         }
@@ -301,7 +300,6 @@ public class Main {
             if((snakeDown.get(0).x == snakeDown.get(i).x && snakeDown.get(0).y == snakeDown.get(i).y) ||
                     (snakeUp.get(0).x == snakeDown.get(i).x && snakeUp.get(0).y == snakeDown.get(i).y)){
                 System.out.println("det var doubleSnakeLife snakeDown");
-
                 return false;
             }
         }
@@ -312,10 +310,9 @@ public class Main {
     //Gives the snake a random crazy behaviour
     public static int kindOfCrazySnake(){
         Random rand = new Random();
-        return 2;
-
-                //rand.nextInt(3);
+        return rand.nextInt(3);
     }
+    
     //Places food on the board
     public static Food foodPlacing(Food food, List<Snake> snake){
         Random rand = new Random();

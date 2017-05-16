@@ -80,6 +80,9 @@ public class Main {
                             i++;
                             snakeMovement(snake, direction);
                             updateCrazyScreen(snake, terminal, j);
+                            if(!snakeLife(snake)){
+                                return false;
+                            }
                             break;
                         case 1:
                             direction = snakeCrazyDirection(direction, terminal);
@@ -87,8 +90,12 @@ public class Main {
                             j++;
                             snakeMovement(snake, direction);
                             updateCrazyScreen(snake, terminal, j);
+                            if(!snakeLife(snake)){
+                                return false;
+                            }
                             break;
                         case 2:
+
                             if(snakeDown.size() != 0 && snakeUp.size() != 0){
                                 snakeMovement(snakeUp, direction);
                                 snakeMovement(snakeDown, direction);
@@ -99,7 +106,7 @@ public class Main {
                                 for(int k = 0; k < snake.size()/2; k++){
                                     snakeUp.add(snake.get(k));
                                 }
-                                for(int k = snake.size()-1; k > snake.size()/2; k--){
+                                for(int k = snake.size()/2; k < snake.size(); k++ ){
                                     snakeDown.add(snake.get(k));
                                 }
                                 snakeMovement(snakeUp, direction);
@@ -107,11 +114,11 @@ public class Main {
                                 updateScreenSlicedSnake(snakeUp, snakeDown, terminal, j);
                             }
                             Thread.sleep(100);
+                            if(!doubleSnakeLife(snakeUp, snakeDown)){
+                                return false;
+                            }
                             j++;
                             break;
-                    }
-                    if(!snakeLife(snake)){
-                        return false;
                     }
                 }
                 crazyFood = foodPlacing(crazyFood, snake);
@@ -274,15 +281,40 @@ public class Main {
     public static boolean snakeLife(ArrayList<Snake> snake) {
         for(int i = 1; i < snake.size(); i++) {
             if(snake.get(0).x == snake.get(i).x && snake.get(0).y == snake.get(i).y){
+                System.out.println("Det var snakelife");
                 return false;
             }
         }return true;
     }
+    //Checks if doubleSnake has crashed
+    public static boolean doubleSnakeLife(ArrayList<Snake> snakeUp, ArrayList<Snake> snakeDown) {
+        for(int i = 1; i < snakeUp.size(); i++) {
+            if((snakeUp.get(0).x == snakeUp.get(i).x && snakeUp.get(0).y == snakeUp.get(i).y) ||
+                    (snakeDown.get(0).x == snakeUp.get(i).x && snakeDown.get(0).y == snakeUp.get(i).y)){
+
+                System.out.println("det var doubleSnakeLife snakeUp");
+
+                return false;
+            }
+        }
+        for(int i = 1; i < snakeDown.size(); i++) {
+            if((snakeDown.get(0).x == snakeDown.get(i).x && snakeDown.get(0).y == snakeDown.get(i).y) ||
+                    (snakeUp.get(0).x == snakeDown.get(i).x && snakeUp.get(0).y == snakeDown.get(i).y)){
+                System.out.println("det var doubleSnakeLife snakeDown");
+
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     //Gives the snake a random crazy behaviour
     public static int kindOfCrazySnake(){
         Random rand = new Random();
-        return rand.nextInt(3);
+        return 2;
+
+                //rand.nextInt(3);
     }
     //Places food on the board
     public static Food foodPlacing(Food food, List<Snake> snake){
